@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Sign in — Server Monitor{% endblock %}
+
+{% block content %}
+<section class="auth-panel">
+  <h1>Sign in</h1>
+  <p class="lede">Use the shared <span class="mono">admin</span> account for this local demo.</p>
+
+  <form class="auth-form" method="post" action="{{ url_for('main.login') }}" novalidate>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label class="field">
+      <span>Username</span>
+      <input type="text" name="username" autocomplete="username" required autofocus>
+    </label>
+    <label class="field">
+      <span>Password</span>
+      <input type="password" name="password" autocomplete="current-password" required>
+    </label>
+    <button class="btn btn-primary" type="submit">Sign in</button>
+  </form>
+</section>
+{% endblock %}

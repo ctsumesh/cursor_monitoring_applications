@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Server Monitor — Home{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <p class="eyebrow">Linux inventory · live metrics · localhost demo</p>
+  <h1>See host health without opening an SSH session</h1>
+  <p class="lede">
+    Add Linux servers, refresh on demand, and read CPU, memory, network, and listening ports
+    from a simple web UI built for L1–L3 and app teams.
+  </p>
+  <div class="hero-actions">
+    {% if is_authenticated %}
+      <a class="btn btn-primary" href="{{ url_for('main.dashboard') }}">Open dashboard</a>
+    {% else %}
+      <a class="btn btn-primary" href="{{ url_for('main.login') }}">Sign in</a>
+    {% endif %}
+    <a class="btn btn-ghost" href="#whats-included">What’s included</a>
+  </div>
+</section>
+
+<section id="whats-included" class="feature-strip">
+  <h2>What’s included in this demo</h2>
+  <ul class="feature-list">
+    <li>
+      <span class="feature-label">Inventory</span>
+      <span class="feature-text">Track hosts, SSH ports, and credentials references locally</span>
+    </li>
+    <li>
+      <span class="feature-label">On-demand metrics</span>
+      <span class="feature-text">Manual refresh pulls CPU, memory, network, and listening ports</span>
+    </li>
+    <li>
+      <span class="feature-label">Basic alerts</span>
+      <span class="feature-text">Highlight servers over CPU or memory thresholds after a refresh</span>
+    </li>
+  </ul>
+</section>
+{% endblock %}
