@@ -69,6 +69,13 @@ source .venv/bin/activate
 pytest
 ```
 
+## CI (GitHub Actions)
+
+On every push and pull request to `main`, GitHub Actions runs a light syntax check and `pytest` on **Python 3.10**.
+
+- Workflow: [`.github/workflows/ci.yml`](.github/workflows/ci.yml)
+- CI uses a **dummy** `FLASK_SECRET_KEY` and `config.example.json` only — no real secrets, and no credential artifacts are published.
+
 ## Project layout
 
 | Path | Role |
@@ -79,6 +86,7 @@ pytest
 | `tests/` | Unit tests (`pytest`) |
 | `docs/` | PRD and step-by-step TODO |
 | `.env.example` | Env var template (do not commit `.env`) |
+| `.github/workflows/ci.yml` | GitHub Actions CI (tests on push/PR) |
 
 ## Security notes
 

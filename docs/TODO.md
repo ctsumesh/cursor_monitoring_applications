@@ -29,10 +29,10 @@ Demo scope: run locally where Cursor is running. Prefer minimal files and steps.
 
 ## Step 3 — CI/CD (GitHub Actions)
 
-- [ ] Add `.github/workflows/ci.yml`: install deps, run linters (optional/light), run unit tests on push/PR
-- [ ] Pin or range Python version in CI to match local demo
-- [ ] **Security:** no secrets in workflow logs; use CI-only dummy config/hash for tests; do not publish artifacts containing credentials
-- [ ] **Docs:** note in `README.md` that CI runs tests on GitHub Actions; link to workflow file
+- [x] Add `.github/workflows/ci.yml`: install deps, run linters (optional/light), run unit tests on push/PR
+- [x] Pin or range Python version in CI to match local demo
+- [x] **Security:** no secrets in workflow logs; use CI-only dummy config/hash for tests; do not publish artifacts containing credentials
+- [x] **Docs:** note in `README.md` that CI runs tests on GitHub Actions; link to workflow file
 
 ---
 
@@ -132,7 +132,7 @@ Demo scope: run locally where Cursor is running. Prefer minimal files and steps.
 |------|--------|--------|
 | 1 | Init + basic UI | Done |
 | 2 | Sign-in + unit tests | Done |
-| 3 | GitHub Actions CI | Pending |
+| 3 | GitHub Actions CI | Done |
 | 4 | Inventory backend | Pending |
 | 5 | Inventory UI | Pending |
 | 6 | SSH helper | Pending |
