@@ -14,6 +14,10 @@ config.local.*
 *.local.cfg
 instance/
 
+# Server inventory (may contain SSH passwords / key paths)
+data/*
+!data/.gitkeep
+
 # Python
 __pycache__/
 *.py[cod]

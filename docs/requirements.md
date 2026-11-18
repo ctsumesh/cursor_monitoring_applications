@@ -111,13 +111,13 @@ Exact commands and file names to be filled during implementation.
 
 ## 7. Acceptance criteria
 
-- [ ] Unauthenticated users cannot see metrics or inventory
-- [ ] Login works with `admin` + password matching bcrypt hash in config
-- [ ] Operator can add, edit, and delete Linux server entries
-- [ ] Manual refresh returns CPU, memory, network (rx/tx + connection count), and listening ports
-- [ ] Dashboard shows servers and basic CPU/memory threshold alerts
-- [ ] Metrics UI does not allow mutating remote host state
-- [ ] App runs locally with minimal setup steps above
+- [x] Unauthenticated users cannot see metrics or inventory
+- [x] Login works with `admin` + password matching bcrypt hash in config
+- [x] Operator can add, edit, and delete Linux server entries
+- [x] Manual refresh returns CPU, memory, network (rx/tx + connection count), and listening ports
+- [x] Dashboard shows servers and basic CPU/memory threshold alerts
+- [x] Metrics UI does not allow mutating remote host state
+- [x] App runs locally with minimal setup steps above
 
 ---
 

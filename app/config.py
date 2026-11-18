@@ -51,6 +51,17 @@ class Config:
     WTF_CSRF_ENABLED = True
     WTF_CSRF_TIME_LIMIT = None
 
+    # Inventory (gitignored JSON under data/)
+    INVENTORY_PATH = os.environ.get("MONITOR_INVENTORY") or str(_ROOT / "data" / "servers.json")
+
+    # Alert thresholds (percent). Override via config.json keys or env.
+    CPU_ALERT_THRESHOLD = float(
+        os.environ.get("CPU_ALERT_THRESHOLD", _file.get("cpu_alert_threshold", 80))
+    )
+    MEMORY_ALERT_THRESHOLD = float(
+        os.environ.get("MEMORY_ALERT_THRESHOLD", _file.get("memory_alert_threshold", 80))
+    )
+
 
 class TestConfig(Config):
     """Isolated config for unit tests (set ADMIN_* / SECRET_KEY in fixtures as needed)."""
@@ -60,3 +71,5 @@ class TestConfig(Config):
     SECRET_KEY = "test-secret-key-not-for-production"
     ADMIN_USERNAME = "admin"
     ADMIN_PASSWORD_HASH = ""  # filled by tests / conftest
+    CPU_ALERT_THRESHOLD = 80.0
+    MEMORY_ALERT_THRESHOLD = 80.0

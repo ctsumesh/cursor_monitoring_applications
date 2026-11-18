@@ -19,6 +19,7 @@
       <nav class="site-nav" aria-label="Main">
         {% if is_authenticated %}
           <a href="{{ url_for('main.dashboard') }}">Dashboard</a>
+          <a href="{{ url_for('main.servers_list') }}">Servers</a>
           <form class="nav-form" method="post" action="{{ url_for('main.logout') }}">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <button type="submit" class="nav-link-btn">Sign out</button>
