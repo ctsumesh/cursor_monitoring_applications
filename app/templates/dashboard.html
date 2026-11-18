@@ -3,11 +3,79 @@
 {% block title %}Dashboard — Server Monitor{% endblock %}
 
 {% block content %}
-<section class="hero">
-  <p class="eyebrow">Signed in as {{ current_username }}</p>
-  <h1>Dashboard</h1>
-  <p class="lede">
-    Server inventory and live metrics land in later steps. This page is a protected placeholder.
-  </p>
+<section class="panel-head">
+  <div>
+    <p class="eyebrow">Signed in as {{ current_username }}</p>
+    <h1>Dashboard</h1>
+    <p class="lede">
+      Manual refresh only. Alerts fire when last CPU ≥ {{ cpu_threshold }}% or memory ≥ {{ memory_threshold }}%.
+    </p>
+  </div>
+  <div class="panel-actions">
+    <a class="btn btn-ghost" href="{{ url_for('main.servers_list') }}">Manage servers</a>
+    <form method="post" action="{{ url_for('main.dashboard_refresh_all') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button class="btn btn-primary" type="submit">Refresh all</button>
+    </form>
+  </div>
 </section>
+
+{% if servers %}
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Server</th>
+      <th>CPU</th>
+      <th>Memory</th>
+      <th>Status</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for s in servers %}
+    <tr class="{% if s.alerts.any_alert %}row-alert{% endif %}">
+      <td>
+        <a href="{{ url_for('main.server_detail', server_id=s.id) }}">{{ s.name }}</a>
+        <div class="muted mono">{{ s.host }}:{{ s.port }}</div>
+      </td>
+      <td class="mono">
+        {% if s.last_metrics and s.last_metrics.cpu_percent is not none %}
+          {{ s.last_metrics.cpu_percent }}%
+          {% if s.alerts.cpu_alert %}<span class="badge badge-alert">alert</span>{% endif %}
+        {% else %}
+          <span class="muted">—</span>
+        {% endif %}
+      </td>
+      <td class="mono">
+        {% if s.last_metrics and s.last_metrics.memory %}
+          {{ s.last_metrics.memory.percent }}%
+          {% if s.alerts.memory_alert %}<span class="badge badge-alert">alert</span>{% endif %}
+        {% else %}
+          <span class="muted">—</span>
+        {% endif %}
+      </td>
+      <td>
+        {% if s.last_error %}
+          <span class="badge badge-error">error</span>
+          <div class="muted">{{ s.last_error }}</div>
+        {% elif s.last_refreshed_at %}
+          <span class="muted">{{ s.last_refreshed_at }}</span>
+        {% else %}
+          <span class="muted">Not yet refreshed</span>
+        {% endif %}
+      </td>
+      <td class="table-actions">
+        <form method="post" action="{{ url_for('main.server_refresh', server_id=s.id) }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <input type="hidden" name="next" value="{{ url_for('main.dashboard') }}">
+          <button class="btn btn-ghost btn-small" type="submit">Refresh</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="lede">No servers yet. <a href="{{ url_for('main.servers_new') }}">Add a Linux server</a>.</p>
+{% endif %}
 {% endblock %}

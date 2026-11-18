@@ -15,10 +15,15 @@ def password_hash():
 
 
 @pytest.fixture()
-def app(password_hash):
+def app(password_hash, tmp_path):
+    inventory_file = tmp_path / "servers.json"
+
     class LocalTestConfig(TestConfig):
         ADMIN_USERNAME = "admin"
         ADMIN_PASSWORD_HASH = password_hash
+        INVENTORY_PATH = str(inventory_file)
+        CPU_ALERT_THRESHOLD = 80.0
+        MEMORY_ALERT_THRESHOLD = 80.0
 
     application = create_app(LocalTestConfig)
     return application
@@ -27,3 +32,9 @@ def app(password_hash):
 @pytest.fixture()
 def client(app):
     return app.test_client()
+
+
+@pytest.fixture()
+def auth_client(client):
+    client.post("/login", data={"username": "admin", "password": DEMO_PASSWORD})
+    return client

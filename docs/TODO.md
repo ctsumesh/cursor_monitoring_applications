@@ -38,91 +38,91 @@ Demo scope: run locally where Cursor is running. Prefer minimal files and steps.
 
 ## Step 4 — Server inventory model (CRUD backend)
 
-- [ ] Define server fields: name, host, SSH port, SSH username, auth material reference (password or key path for demo)
-- [ ] Persist inventory locally (simple JSON/SQLite—pick one and keep it small)
-- [ ] Implement add / list / update / delete functions (no UI polish yet if needed; routes OK)
-- [ ] Unit tests for CRUD validation (reject empty host, invalid port, etc.)
-- [ ] **Security:** never log SSH passwords/keys; store secrets outside git when possible; validate/sanitize host and port input
-- [ ] **Docs:** document inventory storage location and field meanings
+- [x] Define server fields: name, host, SSH port, SSH username, auth material reference (password or key path for demo)
+- [x] Persist inventory locally (simple JSON/SQLite—pick one and keep it small)
+- [x] Implement add / list / update / delete functions (no UI polish yet if needed; routes OK)
+- [x] Unit tests for CRUD validation (reject empty host, invalid port, etc.)
+- [x] **Security:** never log SSH passwords/keys; store secrets outside git when possible; validate/sanitize host and port input
+- [x] **Docs:** document inventory storage location and field meanings
 
 ---
 
 ## Step 5 — Server inventory UI
 
-- [ ] Pages/forms: list servers, add server, edit server, delete with confirm
-- [ ] Require login for all inventory routes
-- [ ] **Security:** CSRF on mutating forms; authorize all actions behind session; escape all user-provided fields in templates (XSS)
-- [ ] **Docs:** screenshot or short “how to add a server” section in `README.md`
+- [x] Pages/forms: list servers, add server, edit server, delete with confirm
+- [x] Require login for all inventory routes
+- [x] **Security:** CSRF on mutating forms; authorize all actions behind session; escape all user-provided fields in templates (XSS)
+- [x] **Docs:** screenshot or short “how to add a server” section in `README.md`
 
 ---
 
 ## Step 6 — SSH connection helper (read-only commands)
 
-- [ ] Add SSH client helper to run allowlisted read-only remote commands
-- [ ] Connection timeout + clear error messages for UI
-- [ ] Unit tests with mocked SSH (success, auth failure, timeout)
-- [ ] **Security:** allowlist commands only (no free-form shell from UI); disable unknown host destructive flows for demo or document known_hosts approach; never expose private key contents in UI/logs
-- [ ] **Docs:** document required SSH access and demo limitation (local/lab hosts only)
+- [x] Add SSH client helper to run allowlisted read-only remote commands
+- [x] Connection timeout + clear error messages for UI
+- [x] Unit tests with mocked SSH (success, auth failure, timeout)
+- [x] **Security:** allowlist commands only (no free-form shell from UI); disable unknown host destructive flows for demo or document known_hosts approach; never expose private key contents in UI/logs
+- [x] **Docs:** document required SSH access and demo limitation (local/lab hosts only)
 
 ---
 
 ## Step 7 — Collect CPU + memory (manual refresh)
 
-- [ ] On Refresh, fetch CPU % and memory used/total/% over SSH
-- [ ] Show results on server detail page (read-only)
-- [ ] Tests with mocked command output parsers
-- [ ] **Security:** parse output safely; treat remote output as untrusted data in UI
-- [ ] **Docs:** note which remote commands/files are used for CPU/memory
+- [x] On Refresh, fetch CPU % and memory used/total/% over SSH
+- [x] Show results on server detail page (read-only)
+- [x] Tests with mocked command output parsers
+- [x] **Security:** parse output safely; treat remote output as untrusted data in UI
+- [x] **Docs:** note which remote commands/files are used for CPU/memory
 
 ---
 
 ## Step 8 — Collect network metrics
 
-- [ ] On Refresh, collect interface rx/tx throughput and connection count
-- [ ] Display on server detail page
-- [ ] Parser unit tests
-- [ ] **Security:** allowlisted commands only; sanitize display values
-- [ ] **Docs:** document network metric sources
+- [x] On Refresh, collect interface rx/tx throughput and connection count
+- [x] Display on server detail page
+- [x] Parser unit tests
+- [x] **Security:** allowlisted commands only; sanitize display values
+- [x] **Docs:** document network metric sources
 
 ---
 
 ## Step 9 — Collect listening ports
 
-- [ ] On Refresh, collect listening ports (and bound process if simple over SSH)
-- [ ] Display on server detail page
-- [ ] Parser unit tests
-- [ ] **Security:** read-only; no port bind/kill actions in UI
-- [ ] **Docs:** document how listening ports are gathered
+- [x] On Refresh, collect listening ports (and bound process if easily available over SSH)
+- [x] Display on server detail page
+- [x] Parser unit tests
+- [x] **Security:** read-only; no port bind/kill actions in UI
+- [x] **Docs:** document how listening ports are gathered
 
 ---
 
 ## Step 10 — Dashboard + manual refresh all
 
-- [ ] Dashboard lists all servers with last-fetched CPU/memory summary (or “not yet refreshed”)
-- [ ] Manual “Refresh” per server and/or refresh visible set
-- [ ] Link dashboard rows to server detail
-- [ ] **Security:** all dashboard routes behind login; no remote mutation
-- [ ] **Docs:** update `README.md` with main user flow (login → add server → refresh → view)
+- [x] Dashboard lists all servers with last-fetched CPU/memory summary (or “not yet refreshed”)
+- [x] Manual “Refresh” per server and/or refresh visible set
+- [x] Link dashboard rows to server detail
+- [x] **Security:** all dashboard routes behind login; no remote mutation
+- [x] **Docs:** update `README.md` with main user flow (login → add server → refresh → view)
 
 ---
 
 ## Step 11 — Basic CPU/memory alerts
 
-- [ ] Config thresholds for CPU % and memory %
-- [ ] Highlight servers over threshold on dashboard after last refresh
-- [ ] Unit tests for threshold evaluation
-- [ ] **Security:** thresholds are local config only; no external notification side effects
-- [ ] **Docs:** document default thresholds and how to change them
+- [x] Config thresholds for CPU % and memory %
+- [x] Highlight servers over threshold on dashboard after last refresh
+- [x] Unit tests for threshold evaluation
+- [x] **Security:** thresholds are local config only; no external notification side effects
+- [x] **Docs:** document default thresholds and how to change them
 
 ---
 
 ## Step 12 — Hardening pass + final demo docs
 
-- [ ] Confirm metrics UI is read-only; inventory CRUD + login are the only writes
-- [ ] Review `.gitignore`, sample config, and that real hashes/keys are not committed
-- [ ] Smoke-test full local flow on the Cursor machine
-- [ ] **Security:** checklist—session secret, bcrypt, CSRF, SSH allowlist, no secret logging, XSS escaping
-- [ ] **Docs:** finalize minimal `README.md` runbook; keep `docs/requirements.md` and this `docs/TODO.md` in sync with what shipped
+- [x] Confirm metrics UI is read-only; inventory CRUD + login are the only writes
+- [x] Review `.gitignore`, sample config, and that real hashes/keys are not committed
+- [x] Smoke-test full local flow on the Cursor machine
+- [x] **Security:** checklist—session secret, bcrypt, CSRF, SSH allowlist, no secret logging, XSS escaping
+- [x] **Docs:** finalize minimal `README.md` runbook; keep `docs/requirements.md` and this `docs/TODO.md` in sync with what shipped
 
 ---
 
@@ -133,12 +133,12 @@ Demo scope: run locally where Cursor is running. Prefer minimal files and steps.
 | 1 | Init + basic UI | Done |
 | 2 | Sign-in + unit tests | Done |
 | 3 | GitHub Actions CI | Done |
-| 4 | Inventory backend | Pending |
-| 5 | Inventory UI | Pending |
-| 6 | SSH helper | Pending |
-| 7 | CPU + memory | Pending |
-| 8 | Network metrics | Pending |
-| 9 | Listening ports | Pending |
-| 10 | Dashboard + refresh | Pending |
-| 11 | Alerts | Pending |
-| 12 | Hardening + docs | Pending |
+| 4 | Inventory backend | Done |
+| 5 | Inventory UI | Done |
+| 6 | SSH helper | Done |
+| 7 | CPU + memory | Done |
+| 8 | Network metrics | Done |
+| 9 | Listening ports | Done |
+| 10 | Dashboard + refresh | Done |
+| 11 | Alerts | Done |
+| 12 | Hardening + docs | Done |

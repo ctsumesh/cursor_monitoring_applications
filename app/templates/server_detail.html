@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}{{ server.name }} — Server Monitor{% endblock %}
+
+{% block content %}
+<section class="panel-head">
+  <div>
+    <p class="eyebrow">{{ server.host }}:{{ server.port }} · {{ server.username }}</p>
+    <h1>{{ server.name }}</h1>
+    <p class="lede">Metrics are read-only. Refresh pulls allowlisted /proc data over SSH.</p>
+  </div>
+  <div class="panel-actions">
+    <form method="post" action="{{ url_for('main.server_refresh', server_id=server.id) }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button class="btn btn-primary" type="submit">Refresh</button>
+    </form>
+    <a class="btn btn-ghost" href="{{ url_for('main.servers_edit', server_id=server.id) }}">Edit</a>
+  </div>
+</section>
+
+{% if server.last_error %}
+  <p class="flash flash-error">Last error: {{ server.last_error }}</p>
+{% endif %}
+{% if server.last_refreshed_at %}
+  <p class="muted">Last refreshed: <span class="mono">{{ server.last_refreshed_at }}</span></p>
+{% else %}
+  <p class="muted">Not yet refreshed.</p>
+{% endif %}
+
+{% set m = server.last_metrics %}
+{% if m %}
+<div class="metrics-grid">
+  <article class="metric-card {% if server.alerts.cpu_alert %}metric-alert{% endif %}">
+    <h2>CPU</h2>
+    <p class="metric-value mono">{% if m.cpu_percent is not none %}{{ m.cpu_percent }}%{% else %}—{% endif %}</p>
+  </article>
+  <article class="metric-card {% if server.alerts.memory_alert %}metric-alert{% endif %}">
+    <h2>Memory</h2>
+    {% if m.memory %}
+      <p class="metric-value mono">{{ m.memory.percent }}%</p>
+      <p class="muted mono">{{ m.memory.used_kb }} / {{ m.memory.total_kb }} kB</p>
+    {% else %}
+      <p class="metric-value">—</p>
+    {% endif %}
+  </article>
+  <article class="metric-card">
+    <h2>Connections</h2>
+    <p class="metric-value mono">{{ m.network.connection_count if m.network else '—' }}</p>
+  </article>
+</div>
+
+<section class="section-block">
+  <h2>Network interfaces (rx/tx bytes)</h2>
+  {% if m.network and m.network.interfaces %}
+  <table class="data-table">
+    <thead><tr><th>Interface</th><th>RX bytes</th><th>TX bytes</th></tr></thead>
+    <tbody>
+      {% for iface in m.network.interfaces %}
+      <tr>
+        <td class="mono">{{ iface.name }}</td>
+        <td class="mono">{{ iface.rx_bytes }}</td>
+        <td class="mono">{{ iface.tx_bytes }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="muted">No interfaces reported.</p>
+  {% endif %}
+</section>
+
+<section class="section-block">
+  <h2>Listening ports</h2>
+  {% if m.listening_ports %}
+  <table class="data-table">
+    <thead><tr><th>Protocol</th><th>Port</th><th>State</th></tr></thead>
+    <tbody>
+      {% for p in m.listening_ports %}
+      <tr>
+        <td class="mono">{{ p.protocol }}</td>
+        <td class="mono">{{ p.port }}</td>
+        <td>{{ p.state }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="muted">No listening TCP ports parsed.</p>
+  {% endif %}
+</section>
+{% endif %}
+{% endblock %}
