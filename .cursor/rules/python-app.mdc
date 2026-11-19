@@ -1,0 +1,67 @@
+---
+description: Project Python conventions for the Flask monitoring app
+globs: "**/*.py"
+alwaysApply: false
+---
+
+# Python app conventions
+
+## Layout
+
+- App code in `app/`, tests in `tests/`
+- Use the Flask factory `create_app(config_class)` and register blueprints; do not build a global app at import time
+
+## Typing
+
+Prefer `from __future__ import annotations`, explicit parameter/return types, and `X | None` unions.
+
+```python
+# ❌ BAD
+def parse_memory(raw):
+    ...
+
+# ✅ GOOD
+def parse_memory(raw: str) -> dict[str, Any] | None:
+    ...
+```
+
+## Errors and secrets
+
+- Raise domain errors (e.g. `SSHError`) with user-safe messages
+- Never put passwords, keys, or secret material in logs or exception text
+- Load secrets from env / `config.json` (gitignored); never hardcode them
+
+```python
+# ❌ BAD
+raise SSHError(f"auth failed for {password}")
+
+# ✅ GOOD
+raise SSHError("SSH authentication failed") from exc
+```
+
+## SSH / remote ops
+
+- Only run allowlisted read-only remote commands (`ALLOWED_COMMANDS`)
+- Do not accept free-form shell from the UI
+
+```python
+# ❌ BAD
+client.exec_command(user_supplied_cmd)
+
+# ✅ GOOD
+run_allowlisted(target, "meminfo")
+```
+
+## Untrusted remote output
+
+Treat `/proc` (and similar) output as untrusted. On parse failure, return `None` or safe defaults — do not crash the request path.
+
+## Testing
+
+- Reuse fixtures from `tests/conftest.py`: `app`, `client`, `auth_client`
+- Keep `pytest.ini` `pythonpath = .`
+- Unit-test parsers; hit routes via the Flask test client
+
+## Dependencies
+
+Stay within ranges in `requirements.txt` (Flask, bcrypt, Flask-WTF, paramiko, pytest). Do not add packages without a clear need.
